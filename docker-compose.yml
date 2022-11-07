@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:15
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=duct-init-development
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  db-test:
+    image: postgres:15
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=duct-init-test
+
+volumes:
+  postgres-data:
+    driver: local
