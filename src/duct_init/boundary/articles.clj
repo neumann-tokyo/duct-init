@@ -4,7 +4,7 @@
 
 (defmethod ig/init-key ::create [_ {:keys [db]}]
   (fn [{:keys [title body]}]
-    (jdbc/execute-one! (-> db :spec :datasource)
+    (jdbc/execute-one! db
                        ["insert into 
                            articles(title,body,created_at,updated_at)
                          values

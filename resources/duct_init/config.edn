@@ -1,9 +1,10 @@
 {:duct.profile/base
  {:duct.core/project-ns duct-init
 
+  :duct-init.db/take-datasource {:db #ig/ref :duct.database.sql/hikaricp}
+
   :duct.handler/root
   {:router #ig/ref :duct-init.router/reitit}
-
   :duct-init.router/reitit
   {:routes [["/articles"
              ["/" {:get {:summary "articles#index"
@@ -51,7 +52,7 @@
   :duct-init.handler.articles/update {}
   :duct-init.handler.articles/delete {}
 
-  :duct-init.boundary.articles/create {:db #ig/ref :duct.database.sql/hikaricp}}
+  :duct-init.boundary.articles/create {:db #ig/ref :duct-init.db/take-datasource}}
 
  :duct.profile/dev #duct/include "dev"
  :duct.profile/local #duct/include "local"
