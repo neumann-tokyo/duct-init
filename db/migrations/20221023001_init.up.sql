@@ -1,8 +1,8 @@
 begin;
-create table users(
+create table articles(
   id serial primary key,
-  email varchar(255),
-  password_digest varchar(500),
+  title varchar(255),
+  body text,
   created_at timestamp with time zone,
   updated_at timestamp with time zone
 );

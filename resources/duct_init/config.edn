@@ -1,7 +1,52 @@
 {:duct.profile/base
  {:duct.core/project-ns duct-init
 
-  :duct.router/cascading []}
+  ;; :duct.router/cascading []
+  :duct.handler/root
+  {:router #ig/ref :duct-init.router/reitit}
+
+  :duct-init.router/reitit
+  {:routes [["/articles"
+             ["/" {:get {:summary "articles#index"
+                         :parameters {:query [:map
+                                              [:x {:title "X parameter"
+                                                   :description "Description for X parameter "}
+                                               :int]
+                                              [:y :int]]}
+                         :responses {200 {:body [:map [:total :int]]}}
+                         :handler #ig/ref :duct-init.handler.articles/index}
+                   :post {:summary "articles#create"
+                          :parameters {:body [:map
+                                              [:title
+                                               {:title "A title of an article"
+                                                :description "Description for the title parameter"}
+                                               :string]
+                                              [:body
+                                               {:title "A body of an article"}
+                                               :string]]}
+                          :responses {200 {:body :string}}
+                          :handler #ig/ref :duct-init.handler.articles/create}}]
+             "/:id" {:get {:summary "articles#show"
+                           :responses {200 {:body [:map
+                                                   [:title :string]
+                                                   [:body :string]]}}
+                           :handler #ig/ref :duct-init.handler.articles/show}
+                     :post {:summary "articles#update"
+                            :parameters {:body [:map
+                                                [:title
+                                                 {:title "A title of an article"
+                                                  :description "Description for the title parameter"}
+                                                 :string]
+                                                [:body
+                                                 {:title "A body of an article"}
+                                                 :string]]}
+                            :responses {200 {:body :string}}
+                            :handler #ig/ref :duct-init.handler.articles/update}}
+             "/:id/delete" {:post {:summary "articles#delete"
+                                   :responses {200 {:body :string}}
+                                   :handler #ig/ref :duct-init.handler.articles/delete}}]]}
+
+  :duct-init.handler.index/index {}}
 
  :duct.profile/dev   #duct/include "dev"
  :duct.profile/local #duct/include "local"
