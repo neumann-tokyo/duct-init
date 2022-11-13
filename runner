@@ -31,7 +31,7 @@ migrate -source file://./db/migrations -database postgresql://postgres:password@
 docker compose run -T db psql postgresql://postgres:password@db:5432/duct-init-development?sslmode=disable
 ;;
 "test") ##
-lein eftest $ARGS
+lein eftest $ARGS && ./cleanup-testdb
 ;;
 "help" | *)
 (

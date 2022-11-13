@@ -1,0 +1,14 @@
+#!/bin/bash
+set -Ceu
+
+PSQL="docker compose run --rm db-test psql"
+DB_URL="postgresql://postgres:password@db-test:5432/duct-init-test?sslmode=disable"
+TABLES=$(${PSQL} ${DB_URL} -t -c "SELECT relname FROM pg_stat_user_tables WHERE relname <> 'ragtime_migrations';");
+
+SQL=""
+for table in $TABLES
+do
+  SQL="truncate table ${table}; ${SQL}"
+done
+
+${PSQL} ${DB_URL} -c "${SQL}"
