@@ -1,0 +1,1 @@
+{:duct.database.sql/hikaricp {:jdbc-url "jdbc:postgresql://localhost:5434/duct-init-test?user=postgres&password=password"}}

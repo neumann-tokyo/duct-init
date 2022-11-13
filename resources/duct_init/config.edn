@@ -1,7 +1,6 @@
 {:duct.profile/base
  {:duct.core/project-ns duct-init
 
-  ;; :duct.router/cascading []
   :duct.handler/root
   {:router #ig/ref :duct-init.router/reitit}
 
@@ -46,14 +45,18 @@
                                    :responses {200 {:body :string}}
                                    :handler #ig/ref :duct-init.handler.articles/delete}}]]}
 
-  :duct-init.handler.index/index {}}
+  :duct-init.handler.articles/index {}
+  :duct-init.handler.articles/show {}
+  :duct-init.handler.articles/create {articles-create #ig/ref :duct-init.boundary.articles/create}
+  :duct-init.handler.articles/update {}
+  :duct-init.handler.articles/delete {}
 
- :duct.profile/dev   #duct/include "dev"
+  :duct-init.boundary.articles/create {:db #ig/ref :duct.database.sql/hikaricp}}
+
+ :duct.profile/dev #duct/include "dev"
  :duct.profile/local #duct/include "local"
- :duct.profile/prod  {}
+ :duct.profile/test #duct/include "test"
+ :duct.profile/prod #duct/include "prod"
 
  :duct.module/logging {}
- :duct.module.web/api
- {}
- :duct.module/sql
- {}}
+ :duct.module.web/api {}}

@@ -1,2 +1,2 @@
-{:duct.database/sql
- {:connection-uri "jdbc:postgresql://localhost:5433/duct-init-development?user=postgres&password=password"}}
+{:duct.database.sql/hikaricp
+ {:jdbc-url "jdbc:postgresql://localhost:5433/duct-init-development?user=postgres&password=password"}}
