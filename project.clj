@@ -24,9 +24,10 @@
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
   :middleware     [lein-duct.plugin/middleware]
   :profiles
-  {:test  {:source-paths   ["dev/src" "test"]
-           :resource-paths ["dev/resources"]
-           :dependencies   [[eftest "0.5.9"]]}
+  {:test  {:source-paths   ["src" "dev/src" "test"]
+           :resource-paths ["resources" "target/resources" "dev/resources"]
+           :dependencies   [[eftest "0.5.9"]]
+           :main ^:skip-aot test}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]
           :dependencies   [[integrant/repl "0.3.2"]

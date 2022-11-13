@@ -52,15 +52,7 @@ You can use `(auto-reset)`, `(halt)`, `(exit)`
 
 ### Testing
 
-Testing is fastest through the REPL, as you avoid environment startup
-time.
-
-```clojure
-dev=> (test)
-...
-```
-
-But you can also run tests through `runner`.
+you can run tests through `runner`.
 
 ```sh
 ./runner test
