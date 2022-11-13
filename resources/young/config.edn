@@ -1,0 +1,28 @@
+{:duct.profile/base
+ {:duct.core/project-ns duct-init
+
+  ;; :duct.router/cascading []
+  :duct.handler/root
+  {:router #ig/ref :duct-init.router/reitit}
+
+  :duct-init.router/reitit
+  {:routes [["/" {:get {:summary "root"
+                        :parameters {:query [:map
+                                             [:x {:title "X parameter"
+                                                  :description "Description for X parameter "}
+                                              :int]
+                                             [:y :int]]}
+                        :request {200 {:body [:map [:total :int]]}}
+                        :handler #ig/ref :duct-init.handler.index/index}}]]}
+
+  :duct-init.handler.index/index {}}
+
+ :duct.profile/dev   #duct/include "dev"
+ :duct.profile/local #duct/include "local"
+ :duct.profile/prod  {}
+
+ :duct.module/logging {}
+ :duct.module.web/api
+ {}
+ :duct.module/sql
+ {}}

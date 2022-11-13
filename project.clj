@@ -1,4 +1,3 @@
-;; TODO rename project name
 (defproject duct-init "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
@@ -8,8 +7,16 @@
                  [duct/module.logging "0.5.0"]
                  [duct/module.sql "0.6.1"]
                  [duct/module.web "0.7.3"]
-                 [org.postgresql/postgresql "42.2.19"]]
-  :plugins [[duct/lein-duct "0.12.3"]]
+                 [org.postgresql/postgresql "42.2.19"]
+                 [metosin/reitit "0.5.18"]
+                 [org.clojure/tools.reader "1.3.6"]]
+  :plugins [[duct/lein-duct "0.12.3"]
+            [lein-eftest "0.5.9"]]
+;;   :eftest {:multithread? :vars
+;;            :thread-count 4
+;;            :report eftest.report.junit/report
+;;          ;; You can optionally write the output to a file like so:
+;;            :report-to-file "target/junit.xml"}
   :main ^:skip-aot duct-init.main
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
@@ -17,7 +24,9 @@
   :profiles
   {:dev  [:project/dev :profiles/dev]
    :repl {:prep-tasks   ^:replace ["javac" "compile"]
-          :repl-options {:init-ns user}}
+          :repl-options {:init (do (require 'dev)
+                                   (in-ns 'dev))
+                         :init-ns dev}}
    :uberjar {:aot :all}
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]

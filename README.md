@@ -1,33 +1,32 @@
 # duct-init
 
-FIXME: description
+This repository is a pre-setup of frequently used functions in duct.
+
+- PostgreSQL (docker)
+- migration ([golang-migrate/migrate](https://github.com/golang-migrate/migrate))
+- routes ([reitit](https://github.com/metosin/reitit))
 
 ## Developing
 
 ### Setup
 
-When you first clone this repository, run:
+You need to install:
 
-```sh
-lein duct setup
+- [homebrew](https://brew.sh)
+- [docker](https://docs.docker.com) and docker compose
+
+And,
+
+```bash
+./runner setup
 ```
-
-This will create files for local configuration, and prep your system
-for the project.
 
 ### Environment
 
 To begin developing, start with a REPL.
 
 ```sh
-lein repl
-```
-
-Then load the development environment.
-
-```clojure
-user=> (dev)
-:loaded
+./runner repl
 ```
 
 Run `go` to prep and initiate the system.
@@ -49,6 +48,8 @@ dev=> (reset)
 :resumed
 ```
 
+You can use `(auto-reset)`, `(halt)`, `(exit)`
+
 ### Testing
 
 Testing is fastest through the REPL, as you avoid environment startup
@@ -59,12 +60,8 @@ dev=> (test)
 ...
 ```
 
-But you can also run tests through Leiningen.
+But you can also run tests through `runner`.
 
 ```sh
-lein test
+./runner test
 ```
-
-## Legal
-
-Copyright © 2022 FIXME
