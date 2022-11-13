@@ -4,11 +4,10 @@
 
 (defmethod ig/init-key ::create [_ {:keys [db]}]
   (fn [{:keys [title body]}]
-    (str title body)
-    #_(jdbc/execute-one! db
-                         ["insert into 
+    (jdbc/execute-one! (-> db :spec :datasource)
+                       ["insert into 
                            articles(title,body,created_at,updated_at)
                          values
                            (?, ?, current_timestamp, current_timestamp)"
-                          title body]
-                         {:return-keys true})))
+                        title body]
+                       {:return-keys true})))

@@ -4,6 +4,7 @@
 
 (t/deftest boundary-articles-create-test
   (t/testing "foo"
-    (prn "fooo")
-    (let [create (tu/ig-get :duct-init.boundary.articles/create)]
-      (t/is (= (create {:title "hello" :body "world"}) "helloworld")))))
+    (let [create (tu/ig-get :duct-init.boundary.articles/create)
+          article (create {:title "hello" :body "world"})]
+      (t/is (= (:articles/title article) "hello"))
+      (t/is (= (:articles/body article) "world")))))
