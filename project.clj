@@ -3,6 +3,7 @@
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.10.3"]
+                 [clojure.java-time "1.1.0"]
                  [duct/core "0.8.0"]
                  [duct/module.logging "0.5.0"]
                  [duct/module.sql "0.6.1"]

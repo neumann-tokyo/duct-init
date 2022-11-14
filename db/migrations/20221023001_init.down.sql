@@ -1,3 +1,3 @@
 begin;
-drop table users;
+drop table articles;
 commit;

@@ -1,13 +1,23 @@
 (ns duct-init.boundary.articles
   (:require [integrant.core :as ig]
-            [next.jdbc :as jdbc]))
+            [next.jdbc.sql :as sql]
+            [next.jdbc.date-time]
+            [java-time.api :as jt]))
 
 (defmethod ig/init-key ::create [_ {:keys [db]}]
   (fn [{:keys [title body]}]
-    (jdbc/execute-one! db
-                       ["insert into 
-                           articles(title,body,created_at,updated_at)
-                         values
-                           (?, ?, current_timestamp, current_timestamp)"
-                        title body]
-                       {:return-keys true})))
+    (sql/insert! db :articles
+                 {:title title
+                  :body body})))
+
+(defmethod ig/init-key ::update [_ {:keys [db]}]
+  (fn [{:keys [id title body]}]
+    (sql/update! db :articles
+                 {:title title
+                  :body body
+                  :updated_at (jt/instant)}
+                 {:id id})))
+
+(defmethod ig/init-key ::get-by-id [_ {:keys [db]}]
+  (fn [id]
+    (sql/get-by-id db :articles id)))
