@@ -18,7 +18,28 @@
             [integrant.core :as ig]
             [clojure.walk :as walk]))
 
-(def default-route-opts
+(defn middleware [env]
+  (let [base [;; swagger feature
+              swagger/swagger-feature
+                ;; query-params & form-params
+              parameters/parameters-middleware
+                ;; content-negotiation
+              muuntaja/format-negotiate-middleware
+                ;; encoding response body
+              muuntaja/format-response-middleware
+                ;; decoding request body
+              muuntaja/format-request-middleware
+                ;; coercing response bodys
+              coercion/coerce-response-middleware
+                ;; coercing request parameters
+              coercion/coerce-request-middleware
+                ;; multipart
+              multipart/multipart-middleware]]
+    (if (= env :production)
+      (conj base exception/exception-middleware)
+      base)))
+
+(defn default-route-opts [env]
   {:coercion (reitit.coercion.malli/create
               {;; set of keys to include in error messages
                :error-keys #{#_:type :coercion :in :schema :value :errors :humanized #_:transformed}
@@ -31,24 +52,7 @@
                ;; malli options
                :options nil})
    :muuntaja m/instance
-   :middleware [;; swagger feature
-                swagger/swagger-feature
-                ;; query-params & form-params
-                parameters/parameters-middleware
-                ;; content-negotiation
-                muuntaja/format-negotiate-middleware
-                ;; encoding response body
-                muuntaja/format-response-middleware
-                ;; exception handling
-                exception/exception-middleware
-                ;; decoding request body
-                muuntaja/format-request-middleware
-                ;; coercing response bodys
-                coercion/coerce-response-middleware
-                ;; coercing request parameters
-                coercion/coerce-request-middleware
-                ;; multipart
-                multipart/multipart-middleware]})
+   :middleware (middleware env)})
 
 (def default-default-handlers
   {:not-found          (ig/ref :duct.handler.static/not-found)
@@ -69,13 +73,13 @@
                            {:name "math", :description "math api"}]}
           :handler (swagger/create-swagger-handler)}}])
 
-(defmethod ig/prep-key ::reitit [_ {:keys [routes]
+(defmethod ig/prep-key ::reitit [_ {:keys [routes env]
                                     ::ring/keys [opts default-handlers]}]
   {:routes (walk/postwalk resolve-symbol routes)
-   ::ring/opts (merge {:data default-route-opts} opts)
+   ::ring/opts (merge {:data (default-route-opts env)} opts)
    ::ring/default-handlers (merge default-default-handlers default-handlers)})
 
-(defmethod ig/init-key ::reitit [_ {:keys [routes]
+(defmethod ig/init-key ::reitit [_ {:keys [routes env]
                                     ::ring/keys [opts default-handlers]}]
   (ring/ring-handler
    (ring/router (conj routes swagger-json-routes) opts)

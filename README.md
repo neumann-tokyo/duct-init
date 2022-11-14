@@ -21,6 +21,23 @@ And,
 ./runner setup
 ```
 
+### Database
+
+Start database:
+
+```bash
+./runner up
+```
+
+migration:
+
+```bash
+./runner migrate
+
+# if you want to migrate back
+./runner migrate-down
+```
+
 ### Environment
 
 To begin developing, start with a REPL.

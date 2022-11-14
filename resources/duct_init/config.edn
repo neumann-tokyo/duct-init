@@ -6,7 +6,8 @@
   :duct.handler/root
   {:router #ig/ref :duct-init.router/reitit}
   :duct-init.router/reitit
-  {:routes [["/articles"
+  {:env #ig/ref :duct.core/environment
+   :routes [["/articles"
              ["/" {:get {:summary "articles#index"
                          :parameters {:query [:map
                                               [:x {:title "X parameter"
@@ -26,30 +27,35 @@
                                                :string]]}
                           :responses {200 {:body :string}}
                           :handler #ig/ref :duct-init.handler.articles/create}}]
-             "/:id" {:get {:summary "articles#show"
-                           :responses {200 {:body [:map
-                                                   [:title :string]
-                                                   [:body :string]]}}
-                           :handler #ig/ref :duct-init.handler.articles/show}
-                     :post {:summary "articles#update"
-                            :parameters {:body [:map
-                                                [:title
-                                                 {:title "A title of an article"
-                                                  :description "Description for the title parameter"}
-                                                 :string]
-                                                [:body
-                                                 {:title "A body of an article"}
-                                                 :string]]}
-                            :responses {200 {:body :string}}
-                            :handler #ig/ref :duct-init.handler.articles/update}}
-             "/:id/delete" {:post {:summary "articles#delete"
-                                   :responses {200 {:body :string}}
-                                   :handler #ig/ref :duct-init.handler.articles/delete}}]]}
+             ["/:id" {:get {:summary "articles#show"
+                            :responses {200 {:body [:map
+                                                    [:articles
+                                                     [:map
+                                                      [:id :int]
+                                                      [:title :string]
+                                                      [:body :string]
+                                                      [:created_at :string]
+                                                      [:updated_at :string]]]]}}
+                            :handler #ig/ref :duct-init.handler.articles/show}
+                      :post {:summary "articles#update"
+                             :parameters {:body [:map
+                                                 [:title
+                                                  {:title "A title of an article"
+                                                   :description "Description for the title parameter"}
+                                                  :string]
+                                                 [:body
+                                                  {:title "A body of an article"}
+                                                  :string]]}
+                             :responses {200 {:body :string}}
+                             :handler #ig/ref :duct-init.handler.articles/update}}]
+             ["/:id/delete" {:post {:summary "articles#delete"
+                                    :responses {200 {:body :string}}
+                                    :handler #ig/ref :duct-init.handler.articles/delete}}]]]}
 
   :duct-init.handler.articles/index {}
-  :duct-init.handler.articles/show {articles-get-by-id #ig/ref :duct-init.boundary.articles/get-by-id}
-  :duct-init.handler.articles/create {articles-create #ig/ref :duct-init.boundary.articles/create}
-  :duct-init.handler.articles/update {articles-update #ig/ref :duct-init.boundary.articles/update}
+  :duct-init.handler.articles/show {:articles-get-by-id #ig/ref :duct-init.boundary.articles/get-by-id}
+  :duct-init.handler.articles/create {:articles-create #ig/ref :duct-init.boundary.articles/create}
+  :duct-init.handler.articles/update {:articles-update #ig/ref :duct-init.boundary.articles/update}
   :duct-init.handler.articles/delete {}
 
   :duct-init.boundary.articles/create {:db #ig/ref :duct-init.db/take-datasource}

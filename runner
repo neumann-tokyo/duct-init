@@ -20,7 +20,7 @@ lein repl
 "migrate") ##
 [ -z $(which migrate) ] && brew install golang-migrate
 migrate -source file://./db/migrations -database postgresql://postgres:password@localhost:5433/duct-init-development?sslmode=disable up
-# docker compose run -T db psql postgresql://postgres:password@db:5432/duct-init-development?sslmode=disable < db/seeds/*.sql
+docker compose run -T db psql postgresql://postgres:password@db:5432/duct-init-development?sslmode=disable < db/seeds/*.sql
 migrate -source file://./db/migrations -database postgresql://postgres:password@localhost:5434/duct-init-test?sslmode=disable up
 ;;
 "migrate-down") ##

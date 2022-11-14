@@ -6,10 +6,12 @@
     {:status 200
      :body "ok"}))
 
-(defmethod ig/init-key ::show [_ conf]
+(defmethod ig/init-key ::show [_ {:keys [articles-get-by-id]}]
   (fn [req]
-    {:status 200
-     :body "ok"}))
+    (let [id (get-in req [:path-params :id])
+          article (articles-get-by-id (Integer/parseInt id))]
+      {:status 200
+       :body article})))
 
 (defmethod ig/init-key ::create [_ conf]
   (fn [req]
