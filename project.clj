@@ -2,7 +2,7 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.10.3"]
+  :dependencies [[org.clojure/clojure "1.11.1"]
                  [clojure.java-time "1.1.0"]
                  [duct/core "0.8.0"]
                  [duct/module.logging "0.5.0"]
@@ -27,7 +27,9 @@
   :profiles
   {:test  {:source-paths   ["src" "dev/src" "test"]
            :resource-paths ["resources" "target/resources" "dev/resources"]
-           :dependencies   [[eftest "0.5.9"]]
+           :dependencies   [[eftest "0.5.9"]
+                            [hato "0.9.0"]
+                            [nubank/matcher-combinators "3.6.0"]]
            :main ^:skip-aot test}
    :dev  {:source-paths   ["dev/src"]
           :resource-paths ["dev/resources"]

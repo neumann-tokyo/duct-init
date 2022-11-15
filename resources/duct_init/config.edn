@@ -34,8 +34,8 @@
                                                       [:id :int]
                                                       [:title :string]
                                                       [:body :string]
-                                                      [:created_at :string]
-                                                      [:updated_at :string]]]]}}
+                                                      [:created_at :any]
+                                                      [:updated_at :any]]]]}}
                             :handler #ig/ref :duct-init.handler.articles/show}
                       :post {:summary "articles#update"
                              :parameters {:body [:map
