@@ -15,6 +15,7 @@
 
 (defmethod ig/init-key ::create [_ conf]
   (fn [req]
+    (let [aaa (:body-params req)])
     {:status 200
      :body "ok"}))
 

@@ -28,5 +28,8 @@
 (defn json-parse [json-string]
   (j/read-value json-string j/keyword-keys-object-mapper))
 
+(defn to-json [hashmap]
+  (j/write-value-as-string hashmap))
+
 (def test-host
   "http://localhost:3001")

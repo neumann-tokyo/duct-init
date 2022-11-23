@@ -19,3 +19,14 @@
                                 :updated_at (m/regex tu/iso8601-pattern)}}
                     (tu/json-parse (:body response))))
       (tu/halt system))))
+
+(t/deftest integration-articles-create-test
+  (t/testing "integration articles create"
+    (let [system (tu/go)
+          body {:title "hello"
+                :body "world"}
+          response (hc/post (str tu/test-host "/articles/")
+                            {:body (tu/to-json body) :content-type :json})]
+      (t/is (= (:status response) 200))
+      (t/is (= (:body response) "ok"))
+      (tu/halt system))))
