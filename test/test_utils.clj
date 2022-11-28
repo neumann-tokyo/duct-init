@@ -6,21 +6,13 @@
 
 (duct/load-hierarchy)
 
-(def ^:private config
-  (atom
-   (-> (duct/read-config (io/resource "duct_init/config.edn"))
-       (duct/prep-config [:duct.profile/test :duct.profile/local]))))
-
-(defn go []
-  (ig/init @config))
-
-(defn halt [system]
-  (ig/halt! system))
+(defonce system
+  (-> (duct/read-config (io/resource "duct_init/config.edn"))
+      (duct/prep-config [:duct.profile/test :duct.profile/local])
+      (ig/init)))
 
 (defn ig-get [key]
-  (-> @config
-      (ig/init [key])
-      (get key)))
+  (get system key))
 
 (def iso8601-pattern
   #"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z")
@@ -33,3 +25,6 @@
 
 (def test-host
   "http://localhost:3001")
+
+(defn url [& path]
+  (apply str (cons test-host path)))

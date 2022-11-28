@@ -7,26 +7,22 @@
 
 (t/deftest integration-articles-show-test
   (t/testing "integration articles show"
-    (let [system (tu/go)
-          create (tu/ig-get :duct-init.boundary.articles/create)
+    (let [create (tu/ig-get :duct-init.boundary.articles/create)
           article (create {:title "hello" :body "world"})
-          response (hc/get (str tu/test-host "/articles/" (-> article :articles :id)))]
+          response (hc/get (tu/url "/articles/" (-> article :articles :id)))]
       (t/is (= (:status response) 200))
       (t/is (match? {:articles {:id int?
                                 :title "hello"
                                 :body "world"
                                 :created_at (m/regex tu/iso8601-pattern)
                                 :updated_at (m/regex tu/iso8601-pattern)}}
-                    (tu/json-parse (:body response))))
-      (tu/halt system))))
+                    (tu/json-parse (:body response)))))))
 
 (t/deftest integration-articles-create-test
   (t/testing "integration articles create"
-    (let [system (tu/go)
-          body {:title "hello"
+    (let [body {:title "hello"
                 :body "world"}
-          response (hc/post (str tu/test-host "/articles/")
+          response (hc/post (tu/url "/articles/")
                             {:body (tu/to-json body) :content-type :json})]
       (t/is (= (:status response) 200))
-      (t/is (= (:body response) "ok"))
-      (tu/halt system))))
+      (t/is (= (:body response) "ok")))))
