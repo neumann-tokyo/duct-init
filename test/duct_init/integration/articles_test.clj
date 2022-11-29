@@ -25,4 +25,26 @@
           response (hc/post (tu/url "/articles/")
                             {:body (tu/to-json body) :content-type :json})]
       (t/is (= (:status response) 200))
-      (t/is (= (:body response) "ok")))))
+      (t/is (match? {:articles {:id int?
+                                :title "hello"
+                                :body "world"
+                                :created_at (m/regex tu/iso8601-pattern)
+                                :updated_at (m/regex tu/iso8601-pattern)}}
+                    (tu/json-parse (:body response)))))))
+
+(t/deftest integration-articles-update-test
+  (t/testing "integration articles update"
+    (let [create (tu/ig-get :duct-init.boundary.articles/create)
+          article (create {:title "hello" :body "world"})
+          article-id (-> article :articles :id)
+          body {:title "foo" :body "bar"}
+          response (hc/post (tu/url "/articles/" article-id)
+                            {:body (tu/to-json body) :content-type :json})
+          get-by-id (tu/ig-get :duct-init.boundary.articles/get-by-id)
+          article (get-by-id article-id)]
+      (t/is (= (:status response) 200))
+      (t/is (= (:body response) "ok"))
+      (t/is (match? {:articles {:id article-id
+                                :title "foo"
+                                :body "bar"}}
+                    article)))))

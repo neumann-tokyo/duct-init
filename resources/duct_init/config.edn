@@ -3,6 +3,15 @@
 
   :duct-init.db/take-datasource {:db #ig/ref :duct.database.sql/hikaricp}
 
+  [:duct/const :type/article] [:map
+                               [:articles
+                                [:map
+                                 [:id :int]
+                                 [:title :string]
+                                 [:body :string]
+                                 [:created_at :any]
+                                 [:updated_at :any]]]]
+
   :duct.handler/root
   {:router #ig/ref :duct-init.router/reitit}
   :duct-init.router/reitit
@@ -25,17 +34,10 @@
                                               [:body
                                                {:title "A body of an article"}
                                                :string]]}
-                          :responses {200 {:body :string}}
+                          :responses {200 {:body #ig/ref :type/article}}
                           :handler #ig/ref :duct-init.handler.articles/create}}]
              ["/:id" {:get {:summary "articles#show"
-                            :responses {200 {:body [:map
-                                                    [:articles
-                                                     [:map
-                                                      [:id :int]
-                                                      [:title :string]
-                                                      [:body :string]
-                                                      [:created_at :any]
-                                                      [:updated_at :any]]]]}}
+                            :responses {200 {:body #ig/ref :type/article}}
                             :handler #ig/ref :duct-init.handler.articles/show}
                       :post {:summary "articles#update"
                              :parameters {:body [:map
