@@ -48,3 +48,14 @@
                                 :title "foo"
                                 :body "bar"}}
                     article)))))
+
+(t/deftest integration-articles-delete-test
+  (t/testing "integration articles delete"
+    (let [create (tu/ig-get :duct-init.boundary.articles/create)
+          article (create {:title "hello" :body "world"})
+          article-id (-> article :articles :id)
+          response (hc/post (tu/url "/articles/" article-id "/delete"))
+          get-by-id (tu/ig-get :duct-init.boundary.articles/get-by-id)]
+      (t/is (= (:status response) 200))
+      (t/is (= (:body response) "ok"))
+      (t/is (empty? (get-by-id article-id))))))

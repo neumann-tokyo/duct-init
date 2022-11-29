@@ -26,7 +26,9 @@
       {:status 200
        :body "ok"})))
 
-(defmethod ig/init-key ::delete [_ conf]
-  (fn [req]
-    {:status 200
-     :body "ok"}))
+(defmethod ig/init-key ::delete [_ {:keys [articles-delete]}]
+  (fn [{:keys [path-params]}]
+    (let [id (-> path-params :id Integer/parseInt)
+          _ (articles-delete id)]
+      {:status 200
+       :body "ok"})))

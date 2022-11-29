@@ -58,10 +58,11 @@
   :duct-init.handler.articles/show {:articles-get-by-id #ig/ref :duct-init.boundary.articles/get-by-id}
   :duct-init.handler.articles/create {:articles-create #ig/ref :duct-init.boundary.articles/create}
   :duct-init.handler.articles/update {:articles-update #ig/ref :duct-init.boundary.articles/update}
-  :duct-init.handler.articles/delete {}
+  :duct-init.handler.articles/delete {:articles-delete #ig/ref :duct-init.boundary.articles/delete}
 
   :duct-init.boundary.articles/create {:db #ig/ref :duct-init.db/take-datasource}
   :duct-init.boundary.articles/update {:db #ig/ref :duct-init.db/take-datasource}
+  :duct-init.boundary.articles/delete {:db #ig/ref :duct-init.db/take-datasource}
   :duct-init.boundary.articles/get-by-id {:db #ig/ref :duct-init.db/take-datasource}}
 
  :duct.profile/dev #duct/include "dev"

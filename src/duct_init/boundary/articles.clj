@@ -21,7 +21,10 @@
                   :updated_at (jt/instant)}
                  {:id id})))
 
-;; https://stackoverflow.com/questions/19617336/clojure-deep-merge-hash-maps-with-dot-separated-string-keys
+(defmethod ig/init-key ::delete [_ {:keys [db]}]
+  (fn [id]
+    (sql/delete! db :articles {:id id})))
+
 (defmethod ig/init-key ::get-by-id [_ {:keys [db]}]
   (fn [id]
     (-> db
