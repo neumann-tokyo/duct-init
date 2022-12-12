@@ -3,10 +3,6 @@
             [duct-init.util :as util]))
 
 (t/deftest structured-test
-  (prn (util/structured
-        {:articles/id 1
-         :articles/title "hello"
-         :articles/body "world"}))
   (t/is (= (util/structured
             {:articles/id 1
              :articles/title "hello"
