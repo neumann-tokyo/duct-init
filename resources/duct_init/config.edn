@@ -18,11 +18,7 @@
   {:env #ig/ref :duct.core/environment
    :routes [["/articles"
              ["/" {:get {:summary "articles#index"
-                         :parameters {:query [:map
-                                              [:x {:title "X parameter"
-                                                   :description "Description for X parameter "}
-                                               :int]
-                                              [:y :int]]}
+                         :parameters {}
                          :responses {200 {:body [:map [:total :int]]}}
                          :handler #ig/ref :duct-init.handler.articles/index}
                    :post {:summary "articles#create"

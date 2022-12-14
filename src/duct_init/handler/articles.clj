@@ -1,6 +1,7 @@
 (ns duct-init.handler.articles
   (:require [integrant.core :as ig]))
 
+;; TODO ここまだやってなかった
 (defmethod ig/init-key ::index [_ conf]
   (fn [req]
     {:status 200
