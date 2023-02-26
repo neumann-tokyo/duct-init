@@ -8,8 +8,11 @@ case ${1} in
 "setup") ##
 [ -z $(which clojure) ] && brew install clojure/tools/clojure
 [ -z $(which lein) ] && brew install leiningen
-[ -z $(which migrate) ] && brew install golang-migrate
 lein duct setup
+docker compose up db db-test -d
+sleep 5
+docker compose up migrate migrate-test
+docker compose up
 ;;
 "up") ##
 docker compose up
@@ -17,18 +20,11 @@ docker compose up
 "repl") ##
 lein repl
 ;;
-"migrate") ##
-[ -z $(which migrate) ] && brew install golang-migrate
-migrate -source file://./db/migrations -database postgresql://postgres:password@localhost:5433/duct-init-development?sslmode=disable up
-docker compose run -T db psql postgresql://postgres:password@db:5432/duct-init-development?sslmode=disable < db/seeds/*.sql
-migrate -source file://./db/migrations -database postgresql://postgres:password@localhost:5434/duct-init-test?sslmode=disable up
-;;
-"migrate-down") ##
-migrate -source file://./db/migrations -database postgresql://postgres:password@localhost:5433/duct-init-development?sslmode=disable down
-migrate -source file://./db/migrations -database postgresql://postgres:password@localhost:5434/duct-init-test?sslmode=disable down
+"seed") ##
+docker compose exec -T db psql postgresql://postgres:password@db:5432/crane-server-development?sslmode=disable < db/seeds/*.sql
 ;;
 "psql") ##
-docker compose run -T db psql postgresql://postgres:password@db:5432/duct-init-development?sslmode=disable
+docker compose exec -T db psql postgresql://postgres:password@db:5432/crane-server-development?sslmode=disable
 ;;
 "test") ##
 lein eftest $ARGS && ./cleanup-testdb

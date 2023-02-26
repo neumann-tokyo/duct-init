@@ -19,6 +19,34 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=duct-init-test
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./db/migrations:/migrations
+    command:
+      [
+        "-source",
+        "file:///migrations",
+        "-database",
+        "postgres://postgres:password@db:5432/duct-init-development?sslmode=disable",
+        "up"
+      ]
+    links:
+      - db
+  migrate-test:
+    image: migrate/migrate
+    volumes:
+      - ./db/migrations:/migrations
+    command:
+      [
+        "-source",
+        "file:///migrations",
+        "-database",
+        "postgres://postgres:password@db-test:5432/duct-init-test?sslmode=disable",
+        "up"
+      ]
+    links:
+      - db-test
 
 volumes:
   postgres-data:
