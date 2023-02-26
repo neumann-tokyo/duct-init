@@ -29,20 +29,12 @@ Start database:
 ./runner up
 ```
 
-migration:
-
-```bash
-./runner migrate
-
-# if you want to migrate back
-./runner migrate-down
-```
-
-### Environment
+### Repl
 
 To begin developing, start with a REPL.
 
 ```sh
+./runner up -d
 ./runner repl
 ```
 
@@ -72,5 +64,6 @@ You can use `(auto-reset)`, `(halt)`, `(exit)`
 you can run tests through `runner`.
 
 ```sh
+./runner up -d
 ./runner test
 ```
