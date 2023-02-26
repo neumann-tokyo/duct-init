@@ -15,7 +15,7 @@ docker compose up migrate migrate-test
 docker compose up
 ;;
 "up") ##
-docker compose up
+docker compose up $ARGS
 ;;
 "repl") ##
 lein repl
